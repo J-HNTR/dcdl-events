@@ -1,0 +1,29 @@
+# Public sources we’ll poll. Add/remove as needed.
+feeds:
+  # Official subreddit RSS (public)
+  - name: "Reddit - r/DCDarkLegionOfficial"
+    type: rss
+    url: "https://www.reddit.com/r/DCDarkLegionOfficial/.rss"
+    include_keywords: ["event", "bleed", "hypertime", "newsletter", "schedule", "roadmap", "supreme commander"]
+
+  # Official site news (HTML; parsed)
+  - name: "Official Site - News"
+    type: html
+    url: "https://dcdarklegion.com/newsList"
+
+  # X/Twitter via Nitter (public mirror RSS). If this mirror breaks, swap to another Nitter.
+  - name: "X - @DCDarkLegion"
+    type: rss
+    url: "https://nitter.net/dcdarklegion/rss"
+    include_keywords: ["event", "schedule", "roadmap", "bleed", "hypertime"]
+
+  # Facebook page via bridge (optional; comment out if a bridge isn’t available)
+  # You can use rsshub.app if you run/self-host it.
+  # - name: "Facebook - DCDarkLegion"
+  #   type: rss
+  #   url: "https://rsshub.app/facebook/page/DCDarkLegion"
+
+hints:
+  # Soft hints only; never source of truth.
+  - name: "dotGG upcoming characters (hint)"
+    url: "https://dotgg.gg/dc-dark-legion-the-bleed/"
