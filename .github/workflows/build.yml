@@ -123,6 +123,28 @@ for it in raw_items:
             "title": ev["title"], "start": ev["start"].isoformat(), "end": ev["end"].isoformat()
         }
     events.append(ev)
+# Add team events
+team_events_path = "data/team_events.yaml"
+if os.path.exists(team_events_path):
+    with open(team_events_path, "r", encoding="utf-8") as f:
+        team_data = yaml.safe_load(f) or {}
+    for te in team_data.get("team_events", []):
+        try:
+            start = datetime.fromisoformat(te["start"])
+            end = datetime.fromisoformat(te["end"])
+            ev2 = {
+                "title": te.get("title", ""),
+                "link": "",
+                "summary": te.get("description", ""),
+                "start": start,
+                "end": end,
+            }
+            base_uid = f"{ev2['title']}|{start.isoformat()}"
+            ev2["uid"] = hashlib.md5(base_uid.encode("utf-8")).hexdigest()
+            events.append(ev2)
+        except Exception as e:
+            print(f"Error parsing team event {te}: {e}")
+
 
 # Build and write calendar
 cal = build_calendar(events)
