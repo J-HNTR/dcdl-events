@@ -1,0 +1,5 @@
+# Use this to pin/adjust dates if an official post is ambiguous or missing a year.
+overrides:
+  - match: "Supreme Commander"
+    start: "2025-07-01"
+    end:   "2025-07-08"
