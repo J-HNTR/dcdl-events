@@ -1,11 +1,11 @@
 # DC: Dark Legion – Auto-updating Calendar Feed
 
 Author: J-HNTR
-     -   -
-     U   U
-     \   / 
-       ^
-      ~~~
+    # -   -
+     #U   U
+     #\   / 
+      # ^
+      #~~~
 
 
 Public iCal feed (subscribe by URL):  
