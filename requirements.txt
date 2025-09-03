@@ -1,0 +1,6 @@
+requests
+PyYAML
+python-dateutil
+ics
+beautifulsoup4
+feedparser
