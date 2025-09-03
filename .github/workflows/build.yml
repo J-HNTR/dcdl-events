@@ -1,0 +1,143 @@
+name: Build calendar
+
+on:
+  schedule:
+    - cron: "0 */4 * * *"  # every 4 hours
+  workflow_dispatch:
+  push:
+    paths:
+      - "scraper/**"
+      - "sources.yaml"
+      - "data/**"
+      - "requirements.txt"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build calendar
+        run: |
+          python - << 'PY'
+import os, json, yaml, hashlib, time
+from datetime import datetime
+from scraper.fetch import get_rss_items, get_html_items
+from scraper.parse import infer_dates_from_text, summarize_title
+from scraper.ics_gen import build_calendar, write_calendar
+
+os.makedirs("docs", exist_ok=True)
+os.makedirs("data", exist_ok=True)
+
+# Load sources
+with open("sources.yaml", "r", encoding="utf-8") as f:
+    sources = yaml.safe_load(f)
+
+# Load overrides + cache
+overrides = {}
+ov_path = "data/manual_overrides.yaml"
+if os.path.exists(ov_path):
+    with open(ov_path, "r", encoding="utf-8") as f:
+        overrides = yaml.safe_load(f) or {}
+
+cache = {"seen": {}}
+cache_path = "data/cache.json"
+if os.path.exists(cache_path):
+    cache = json.load(open(cache_path, "r", encoding="utf-8"))
+
+def uid_for(item):
+    base = f"{item.get('title','')}|{item.get('link','')}"
+    return hashlib.md5(base.encode("utf-8")).hexdigest()
+
+def apply_overrides(ev):
+    ovs = (overrides or {}).get("overrides", [])
+    for o in ovs:
+        if o.get("match","" ).lower() in ev["title"].lower():
+            if "start" in o and "end" in o:
+                from dateutil import parser as dtp
+                ev["start"] = dtp.parse(o["start"])
+                ev["end"]   = dtp.parse(o["end"])
+    return ev
+
+def collect():
+    items = []
+
+    for src in sources.get("feeds", []):
+        t = src.get("type")
+        url = src.get("url")
+        kws = [k.lower() for k in src.get("include_keywords", [])]
+
+        if t == "rss":
+            for it in get_rss_items(url):
+                txt = " ".join([it.get("title",""), it.get("summary","")])
+                if kws and not any(k in txt.lower() for k in kws):
+                    continue
+                items.append(it)
+
+        elif t == "html":
+            items.extend(get_html_items(url))
+
+    return items
+
+raw_items = collect()
+
+events = []
+now = datetime.utcnow()
+default_year = now.year
+
+for it in raw_items:
+    title = summarize_title(it.get("title","" )).strip()
+    txt = " ".join([title, it.get("summary","")]).strip()
+    start, end = infer_dates_from_text(txt, default_year)
+    if not start or not end:
+        continue  # skip items without parseable dates
+
+    ev = {
+        "title": title,
+        "link": it.get("link",""),
+        "summary": it.get("summary",""),
+        "start": start,
+        "end": end,
+    }
+    ev = apply_overrides(ev)
+    ev["uid"] = uid_for(ev)
+
+    # de-dup via cache uid
+    if ev["uid"] in cache["seen"]:
+        # (Optional) Could update times if changed.
+        pass
+    else:
+        cache["seen"][ev["uid"]] = {
+            "title": ev["title"], "start": ev["start"].isoformat(), "end": ev["end"].isoformat()
+        }
+    events.append(ev)
+
+# Build and write calendar
+cal = build_calendar(events)
+write_calendar(cal, "docs/dc-dark-legion.ics")
+
+with open(cache_path, "w", encoding="utf-8") as f:
+    json.dump(cache, f, indent=2, ensure_ascii=False)
+
+print(f"Wrote docs/dc-dark-legion.ics with {len(events)} events")
+PY
+
+      - name: Commit & push docs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/dc-dark-legion.ics data/cache.json
+          git commit -m "Update calendar" || echo "No changes"
+          git push
