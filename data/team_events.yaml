@@ -9,4 +9,18 @@ team_events:
     start: "2025-09-03T20:00:00-04:00"
     end:   "2025-09-03T20:15:00-04:00"
     description: "Daily Bat Train arrives"
-    repeat: "daily"
+
+    - title: "Great Krypton Rush"
+    start: "2025-09-07T08:00:00-04:00"
+    end:   "2025-09-07T08:15:00-04:00"
+    description: "Krypton Rush Event"
+
+    - title: "Great Krypton Rush"
+    start: "2025-09-07T20:00:00-04:00"
+    end:   "2025-09-07T20:15:00-04:00"
+    description: "Krypton Rush Event"
+
+    - title: "Great Krypton Rush"
+    start: "2025-09-08T04:00:00-04:00"
+    end:   "2025-09-08T04:15:00-04:00"
+    description: "Krypton Rush Event"
