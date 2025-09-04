@@ -25,3 +25,19 @@ team_events:
     start: "2025-09-08T04:00:00-04:00"
     end:   "2025-09-08T04:15:00-04:00"
     description: "Krypton Rush Event"
+
+  # New events converted from UTC
+  - title: "Guardian Challenge"
+    start: "2025-09-06T10:00:00-04:00"   # 14:00 UTC → 10:00 Eastern
+    end:   "2025-09-06T10:15:00-04:00"
+    description: "Guardian Challenge (converted from 14:00 UTC)"
+
+  - title: "Guardian Challenge"
+    start: "2025-09-05T23:00:00-04:00"   # 03:00 UTC on 09/06 → 23:00 on 09/05 Eastern
+    end:   "2025-09-05T23:15:00-04:00"
+    description: "Guardian Challenge (converted from 03:00 UTC on 09/06)"
+
+  - title: "Umbral rift"
+    start: "2025-09-03T18:00:00-04:00"   # 6 PM Eastern on the current date
+    end:   "2025-09-03T18:15:00-04:00"
+    description: "Umbral rift event at 6 PM Eastern"
