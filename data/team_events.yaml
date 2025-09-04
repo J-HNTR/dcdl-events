@@ -1,10 +1,5 @@
 # Author: Jasnoor Vandal
 team_events:
-  - title: "Guardian Challenge"
-    start: "2025-09-03T20:00:00-04:00"
-    end:   "2025-09-03T20:15:00-04:00"
-    description: "Guardian Challenge for [LUV] ILoveMyGrandma"
-
   - title: "BatCave train"
     start: "2025-09-03T20:00:00-04:00"
     end:   "2025-09-03T20:15:00-04:00"
@@ -17,26 +12,27 @@ team_events:
     description: "Krypton Rush Event"
 
   - title: "Great Krypton Rush"
-    start: "2025-09-07T20:00:00-04:00"
-    end:   "2025-09-07T20:15:00-04:00"
+    start: "2025-09-07T16:00:00-04:00"
+    end:   "2025-09-07T16:15:00-04:00"
     description: "Krypton Rush Event"
 
   - title: "Great Krypton Rush"
-    start: "2025-09-08T04:00:00-04:00"
-    end:   "2025-09-08T04:15:00-04:00"
+    start: "2025-09-08T00:00:00-04:00"
+    end:   "2025-09-08T00:15:00-04:00"
     description: "Krypton Rush Event"
 
-  # New events converted from UTC
+  # Guardian Challenges for September 6
   - title: "Guardian Challenge"
     start: "2025-09-06T10:00:00-04:00"
     end:   "2025-09-06T10:15:00-04:00"
-    description: "Guardian Challenge (converted from 14:00 UTC)"
+    description: "Guardian Challenge (converted from 14:00 UTC)"
 
   - title: "Guardian Challenge"
-    start: "2025-09-05T23:00:00-04:00"
-    end:   "2025-09-05T23:15:00-04:00"
-    description: "Guardian Challenge (converted from 03:00 UTC on 09/06)"
+    start: "2025-09-06T12:00:00-04:00"
+    end:   "2025-09-06T12:15:00-04:00"
+    description: "Guardian Challenge (converted from 03:00 UTC on 09/06)"
 
+  # Umbral Rift
   - title: "Umbral rift"
     start: "2025-09-04T18:00:00-04:00"
     end:   "2025-09-04T18:15:00-04:00"
